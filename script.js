@@ -85,5 +85,7 @@ testDi.CreatePath(1,2);
 console.log("testDi.Createpath", testDi);
 console.log('testDi.Insertpath(3,0)',testDi.InsertPath(3,0));
 console.log("testDi.vertices", testDi.vertices);
-
+// Note: the degree parameter should probably also store the things that are connected to the vertex
+// that way, I won't have to deal with the ordered pair syntax of my paths while still being able to
+// manipulate the graph with relative ease
 
