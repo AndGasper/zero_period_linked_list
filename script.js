@@ -1,105 +1,81 @@
-function linked_list(){
-    this.head = null;
-    this.current = null;
-    this.count = 0;
-    this.nodeList = {};
-    this.add_list_item = function(data_payload){
-        //create new object
-        let node = {
-            value: data_payload,
-            next: null,
-            isHead: false,
-            isTail: false,
+// Vertices(V) = {v_1, ..., v_n}; v = vertex
+// Edges (E) = {V x V = (v_i, v_j)); Set of ordered pairs made by V x V; Reflexive, transitive, symmetric
+// Graph (G) => G(V,E) the set of vertices and edges
+// So...that was a fancy way of saying a graph is just a series of points, the vertices, that are connected by lines known as edges;
+function Graph() {
+    this.vertices = {}; // vertices object contains every vertex of the graph (G)
+    this.edges = {}; // edges object contains every edge of the graph (G)
+    this.CreateVertex = (value) => {
+        let vertex = {
+            vertexValue: value
         };
+        this.vertices[vertex.vertexValue] = vertex; // Use the value of the vertex to identify it in the vertices object;
+        return this.vertices;
+    };
+    // Not sure how to have ordered pairs in JS, so for now, a single edge will contain all essential information, and the identifier key will be the natural ordered pair arrangement
+    this.CreateEdge = (vertex1,vertex2) => {
+        let orderedPair = "("+vertex1+", "+vertex2+")"; //Formatted string to be able to refer to the pairs more naturally
+        let edge = {
+            v1: vertex1,
+            v2: vertex2
+        };
+        this.edges[orderedPair] = edge;
+    };
+}
 
-        console.log("this.current", this.current);
-        console.log("node",node);
-        //if current is not null
-        if (this.current !== null) {
-            // console.log("this.current",this.current);
-            // console.log("this.current.next",this.current.next);
-            // set current next to new object
-            node.isHead = false;
-            (this.current.next === null)?(node.isTail = true):(node.isTail = false);
-            this.current.next = node;
-            this.current = node;
-            this.nodeList[node.value] = node;
-            //else
-        } else {
-            // HEAD = new_obj
-            node.isHead = true;
-            node.isTail = false;
-            this.current = node; // set current node equal to the input
-            this.head = node; // set the head = to the node added.
-            this.nodeList[node.value] = node;
-        }
-        //increment count
-        //returns count
-        console.log(this.head);
-        return this.count +=1;
+function DiGraph() {
+    this.digraph = new Graph();
+    this.vertices = this.digraph.vertices;
+    this.path = {}; // path object contains start: vertex1 and end: vertex2 information
+    this.CreateVertex = (value) => {
+        return this.digraph.CreateVertex(value); // Pulls CreateVertex inherited by digraph
     };
-    this.get_current_value = function(){
-        //return the value of the current link list node
-        if (this.current.value !== null) {
-            return this.current.value;
-        }
 
+    this.CreatePath = (vertex1, vertex2) => {
+        let orderedPair = "("+vertex1+", "+vertex2+")";
+        let path = {
+            start: this.vertices[vertex1].vertexValue,
+            end: this.vertices[vertex2].vertexValue
+        };
+        this.path[orderedPair] = path;
+        return this.path;
     };
-    this.get_next_value = function(){
-        //walk to the next item in the list
-        //returns the value of the item walked to
-        //if there are no other items, it returns false
-        if (this.current.next !== null) {
-            this.current = this.current.next;
-            return this.get_current_value();
-        } else {
-            return false;
-        }
+    this.RemovePath = (orderedPair) => {
+        let oP = orderedPair.toString();
+        delete this.path[oP];
+        return this.path;
     };
-    this.rewind = function(){
-        //moves the list pointer back to the beginning of the list
-        //returns true if accomplished, or false if the list is empty
-        console.log("this.current", this.current);
-        console.log("this.head", this.head);
-        if (this.current !== null) {
-            return this.current = this.head;
-        } else {
-            return false;
+    this.InsertPath = (vertex1, vertex2) => {
+        let vertexToAdd = vertex1;
+        let vertexToLinkTo = vertex2;
+        if (this.vertices[vertexToAdd] === undefined) {
+            this.CreateVertex(vertexToAdd);
+            this.CreatePath(vertexToAdd, vertexToLinkTo);
         }
-    };
-    // node1 -> node2 => node1 -> nodeToInsert -> node2
-    this.editLinkedList= (nodeToInsert, nodeToLinkTo) => {
-//     console.log('this.nodeList',this.nodeList);
-//     console.log('this.nodeList.nodeToLinkTo', this.nodeList[nodeToLinkTo]);
-        if (this.nodeList[nodeToLinkTo].next.next === null) {
-            nodeToInsert.next = this.nodeList[nodeToLinkTo].next; // nodeToInsert -> node2;
-            nodeToLinkTo.isHead = false;
-            nodeToLinkTo.isTail = false;
-            nodeToInsert.next.isHead = false; // nodeToInsert.next := node2;
-            nodeToInsert.next.isTail = true;
-            this.nodeList[nodeToLinkTo].next = nodeToInsert; // node1 -> nodeToInsert;
-            this.nodeList[nodeToInsert.value] = nodeToInsert; // this.nodeList.(key) = nodeToInsert
-        }
-        console.log(this.nodeList);
-
-        return (this.nodeList);
+        return this.path;
     }
 }
 
-let list = new linked_list();
-console.log(list);
-console.log("list.rewind()",list.rewind()); //returns false
-console.log("list.add_list_item(1)",list.add_list_item(1)); //returns 1
-console.log("list.add_list_item(3)",list.add_list_item(3)); //returns 2
-console.log("list.add_list_item(8)",list.add_list_item(8)); //returns 3
-console.log(list);
-console.log("list.get_current_value()",list.get_current_value()); //returns 8
-console.log("list.rewind()",list.rewind()); //returns true
-console.log("list.get_current_value()",list.get_current_value()); //returns 1
-console.log("list.get_next_value()", list.get_next_value()); //returns 3
-console.log("list.get_current_value()",list.get_current_value()); //returns 3
-console.log("list.get_next_value()", list.get_next_value());//returns 8
-console.log("list.get_next_value()", list.get_next_value());//returns false
-console.log('list.editLinkedList({value:5,next:null},3)',list.editLinkedList({value:5,next:null,isHead:false,isTail:false},3));
+var graph = new Graph();
+graph.CreateVertex(0);
+graph.CreateVertex(1);
+graph.CreateVertex(2);
+console.log("graph",graph);
+console.log("graph.vertices", graph.vertices);
+graph.CreateEdge(0,1);
+graph.CreateEdge(1,2);
+console.log("graph", graph);
+console.log("graph.edges", graph.edges);
+
+var testDi = new DiGraph();
+console.log("testDi",testDi);
+testDi.CreateVertex(0);
+testDi.CreateVertex(1);
+testDi.CreateVertex(2);
+console.log("testDi after CreateVertex", testDi); //this.digraph.vertices
+testDi.CreatePath(0,1);
+testDi.CreatePath(1,2);
+console.log("testDi.Createpath", testDi);
+console.log('testDi.Insertpath(3,0)',testDi.InsertPath(3,0));
 
 
