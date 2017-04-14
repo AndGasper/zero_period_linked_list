@@ -5,9 +5,11 @@
 function Graph() {
     this.vertices = {}; // vertices object contains every vertex of the graph (G)
     this.edges = {}; // edges object contains every edge of the graph (G)
-    this.CreateVertex = (value) => {
+    this.CreateVertex = (value,maxDegree) => {
         let vertex = {
-            vertexValue: value
+            vertexValue: value,
+            degree: 0,
+            maximumDegree: maxDegree
         };
         this.vertices[vertex.vertexValue] = vertex; // Use the value of the vertex to identify it in the vertices object;
         return this.vertices;
@@ -27,8 +29,8 @@ function DiGraph() {
     this.digraph = new Graph();
     this.vertices = this.digraph.vertices;
     this.path = {}; // path object contains start: vertex1 and end: vertex2 information
-    this.CreateVertex = (value) => {
-        return this.digraph.CreateVertex(value); // Pulls CreateVertex inherited by digraph
+    this.CreateVertex = (value,maxDegree) => {
+        return this.digraph.CreateVertex(value,maxDegree); // Pulls CreateVertex inherited by digraph
     };
 
     this.CreatePath = (vertex1, vertex2) => {
@@ -38,11 +40,16 @@ function DiGraph() {
             end: this.vertices[vertex2].vertexValue
         };
         this.path[orderedPair] = path;
+        // Increment the degree of the vertices (nodes) used by 1, i.e. increment
+        ++this.vertices[vertex1].degree;
+        ++this.vertices[vertex2].degree;
         return this.path;
     };
-    this.RemovePath = (orderedPair) => {
-        let oP = orderedPair.toString();
-        delete this.path[oP];
+    this.RemovePath = (startVertexOfPathToDelete, endVertexOfPathToDelete) => {
+        let pathToRemove =  "("+startVertexOfPathToDelete+", "+endVertexOfPathToDelete+")";
+        delete this.path[pathToRemove];
+        --this.vertices[startVertexOfPathToDelete].degree;
+        --this.vertices[endVertexOfPathToDelete].degree;
         return this.path;
     };
     this.InsertPath = (vertex1, vertex2) => {
@@ -57,9 +64,9 @@ function DiGraph() {
 }
 
 var graph = new Graph();
-graph.CreateVertex(0);
-graph.CreateVertex(1);
-graph.CreateVertex(2);
+graph.CreateVertex(0,2);
+graph.CreateVertex(1,2);
+graph.CreateVertex(2,2);
 console.log("graph",graph);
 console.log("graph.vertices", graph.vertices);
 graph.CreateEdge(0,1);
@@ -69,13 +76,14 @@ console.log("graph.edges", graph.edges);
 
 var testDi = new DiGraph();
 console.log("testDi",testDi);
-testDi.CreateVertex(0);
-testDi.CreateVertex(1);
-testDi.CreateVertex(2);
+testDi.CreateVertex(0,2);
+testDi.CreateVertex(1,2);
+testDi.CreateVertex(2,2);
 console.log("testDi after CreateVertex", testDi); //this.digraph.vertices
 testDi.CreatePath(0,1);
 testDi.CreatePath(1,2);
 console.log("testDi.Createpath", testDi);
 console.log('testDi.Insertpath(3,0)',testDi.InsertPath(3,0));
+console.log("testDi.vertices", testDi.vertices);
 
 
