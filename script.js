@@ -2,6 +2,11 @@
 // Edges (E) = {V x V = (v_i, v_j)); Set of ordered pairs made by V x V; Reflexive, transitive, symmetric
 // Graph (G) => G(V,E) the set of vertices and edges
 // So...that was a fancy way of saying a graph is just a series of points, the vertices, that are connected by lines known as edges;
+/**
+ * Represents an undirected graph
+ * @constructor
+ */
+
 function Graph() {
     this.vertices = {}; // vertices object contains every vertex of the graph (G)
     this.edges = {}; // edges object contains every edge of the graph (G)
