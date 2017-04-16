@@ -21,7 +21,7 @@ function Graph() {
     };
     // Not sure how to have ordered pairs in JS, so for now, a single edge will contain all essential information, and the identifier key will be the natural ordered pair arrangement
     this.CreateEdge = (vertex1,vertex2) => {
-        let orderedPair = "("+vertex1+", "+vertex2+")"; //Formatted string to be able to refer to the pairs more naturally
+        let orderedPair = `(${vertex1},${vertex2})`; //Formatted string to be able to refer to the pairs more naturally
         let edge = {
             v1: vertex1,
             v2: vertex2
@@ -39,7 +39,7 @@ function DiGraph() {
     };
 
     this.CreatePath = (vertex1, vertex2) => {
-        let orderedPair = "("+vertex1+", "+vertex2+")";
+        let orderedPair = `(${vertex1},${vertex2})`;
         let path = {
             start: this.vertices[vertex1].vertexValue,
             end: this.vertices[vertex2].vertexValue
@@ -51,18 +51,23 @@ function DiGraph() {
         return this.path;
     };
     this.RemovePath = (startVertexOfPathToDelete, endVertexOfPathToDelete) => {
-        let pathToRemove =  "("+startVertexOfPathToDelete+", "+endVertexOfPathToDelete+")";
+
+        let pathToRemove = `(${startVertexOfPathToDelete},${endVertexOfPathToDelete})`;
         delete this.path[pathToRemove];
-        --this.vertices[startVertexOfPathToDelete].degree;
-        --this.vertices[endVertexOfPathToDelete].degree;
+        --this.vertices[startVertexOfPathToDelete].degree; // Decremenet degree of affected node
+        --this.vertices[endVertexOfPathToDelete].degree; // Decrement degree of affected node
         return this.path;
     };
     this.InsertPath = (vertex1, vertex2) => {
         let vertexToAdd = vertex1;
         let vertexToLinkTo = vertex2;
         if (this.vertices[vertexToAdd] === undefined) {
-            this.CreateVertex(vertexToAdd);
-            this.CreatePath(vertexToAdd, vertexToLinkTo);
+            this.CreateVertex(vertexToAdd); // Use CreateVertex function to make the node you want to add
+            this.CreatePath(vertexToAdd, vertexToLinkTo);   // Use CreatePath function to link the two nodes
+        }
+        else if (this.vertices.vertexToLinkTo.degree >= this.vertices.vertexToLinkTo.maximumDegree) {
+            console.log("Nope rope says hisss");
+            //TODO Clean up ordered pair syntax/add an attribute that allows me to easily reference the next one to delete
         }
         return this.path;
     }
