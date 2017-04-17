@@ -54,20 +54,24 @@ function DiGraph() {
 
         let pathToRemove = `(${startVertexOfPathToDelete},${endVertexOfPathToDelete})`;
         delete this.path[pathToRemove];
-        --this.vertices[startVertexOfPathToDelete].degree; // Decremenet degree of affected node
+        --this.vertices[startVertexOfPathToDelete].degree; // Decrement degree of affected node
         --this.vertices[endVertexOfPathToDelete].degree; // Decrement degree of affected node
         return this.path;
     };
     this.InsertPath = (vertex1, vertex2) => {
         let vertexToAdd = vertex1;
         let vertexToLinkTo = vertex2;
-        if (this.vertices[vertexToAdd] === undefined) {
+        // Check to see if you need to create the vertex, and check to see if the vertex you want to link to isn't full up
+        if ( (this.vertices[vertexToAdd] === undefined) && (this.vertices[vertexToLinkTo].degree < this.vertices[vertexToLinkTo].maximumDegree) ) {
             this.CreateVertex(vertexToAdd); // Use CreateVertex function to make the node you want to add
-            this.CreatePath(vertexToAdd, vertexToLinkTo);   // Use CreatePath function to link the two nodes
+            this.CreatePath(vertexToAdd, vertexToLinkTo);   // Use CreatePath function to link the two nodes; vTA -> vTLT
         }
-        else if (this.vertices.vertexToLinkTo.degree >= this.vertices.vertexToLinkTo.maximumDegree) {
-            console.log("Nope rope says hisss");
-            //TODO Clean up ordered pair syntax/add an attribute that allows me to easily reference the next one to delete
+        else if ((this.vertices[vertexToAdd] !== undefined) && (this.vertices[vertexToAdd].degree < this.vertices[vertexToAdd].maximumDegree) && (this.vertices[vertexToLinkTo].degree < this.vertices[vertexToLinkTo].maximumDegree)) {
+            this.CreatePath(vertexToAdd,vertexToLinkTo); // Both nodes exist and both nodes are unsaturated
+        }
+        else if (this.vertices[vertexToLinkTo].degree === this.vertices[vertexToLinkTo].maximumDegree) {
+            console.log("This node is saturated"); // Need to determine which paths already exist for the given node
+            console.log("Nope.");
         }
         return this.path;
     }
