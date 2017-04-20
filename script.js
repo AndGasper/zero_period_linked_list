@@ -91,7 +91,7 @@ console.log(list);
 console.log("list.rewind()",list.rewind()); //returns false
 console.log("list.add_list_item(1)",list.add_list_item(1)); //returns 1
 console.log("list.add_list_item(3)",list.add_list_item(3)); //returns 2
-console.log("list.add_list_item(8)",list.add_list_item(8)); //returns 3
+console.log("list.add_list_item(8)",list.adds_list_item(8)); //returns 3
 console.log(list);
 console.log("list.get_current_value()",list.get_current_value()); //returns 8
 console.log("list.rewind()",list.rewind()); //returns true
