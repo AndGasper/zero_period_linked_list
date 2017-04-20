@@ -111,7 +111,7 @@ function DiGraph() {
         return this.path;
     };
     /**
-     *
+     * @name this.InsertPath
      * @param vertex1
      * @param vertex2
      * @returns {{}|*}
@@ -122,7 +122,7 @@ function DiGraph() {
         let vertexToLinkTo = vertex2;
         // Check to see if you need to create the vertex, and check to see if the vertex you want to link to isn't full up
         if ( (this.vertices[vertexToAdd] === undefined) && (this.vertices[vertexToLinkTo].degree < this.vertices[vertexToLinkTo].maximumDegree) ) {
-            this.CreateVertex(vertexToAdd); // Use CreateVertex function to make the node you want to add
+            this.CreateVertex(vertexToAdd,this.vertices[vertexToLinkTo].maximumDegree); // Use CreateVertex function to make the node you want to add; default the maximum degree of the new node to the maximum degree of the node it is being linked to;
             this.CreatePath(vertexToAdd, vertexToLinkTo);   // Use CreatePath function to link the two nodes; vTA -> vTLT
         }
         else if ((this.vertices[vertexToAdd] !== undefined) && (this.vertices[vertexToAdd].degree < this.vertices[vertexToAdd].maximumDegree) && (this.vertices[vertexToLinkTo].degree < this.vertices[vertexToLinkTo].maximumDegree)) {
