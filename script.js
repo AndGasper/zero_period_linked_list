@@ -8,8 +8,24 @@
  */
 
 function Graph() {
+    /**
+     * this.vertices
+     * @type {string | Object}
+     */
     this.vertices = {}; // vertices object contains every vertex of the graph (G)
+    /**
+     * @type {{}}
+     */
     this.edges = {}; // edges object contains every edge of the graph (G)
+
+    /**
+     *
+     * @name this.CreateVertex
+     * @param value
+     * @param maxDegree
+     * @returns {string|Object}
+     * @constructor
+     */
     this.CreateVertex = (value,maxDegree) => {
         let vertex = {
             vertexValue: value,
@@ -20,6 +36,19 @@ function Graph() {
         return this.vertices;
     };
     // Not sure how to have ordered pairs in JS, so for now, a single edge will contain all essential information, and the identifier key will be the natural ordered pair arrangement
+    /**
+     * @name this.CreateEdge
+     * @param vertex1
+     * @param vertex2
+     * @constructor
+     */
+    /**
+     *
+     * @param vertex1
+     * @param vertex2
+     * @returns {{}}
+     * @constructor
+     */
     this.CreateEdge = (vertex1,vertex2) => {
         let orderedPair = `(${vertex1},${vertex2})`; //Formatted string to be able to refer to the pairs more naturally
         let edge = {
@@ -29,15 +58,31 @@ function Graph() {
         this.edges[orderedPair] = edge;
     };
 }
-
+/**
+ *
+ * @constructor
+ */
 function DiGraph() {
     this.digraph = new Graph();
     this.vertices = this.digraph.vertices;
     this.path = {}; // path object contains start: vertex1 and end: vertex2 information
+    /**
+     *
+     * @param value
+     * @param maxDegree
+     * @returns {string|Object}
+     * @constructor
+     */
     this.CreateVertex = (value,maxDegree) => {
         return this.digraph.CreateVertex(value,maxDegree); // Pulls CreateVertex inherited by digraph
     };
-
+    /**
+     *
+     * @param vertex1
+     * @param vertex2
+     * @returns {{}|*}
+     * @constructor
+     */
     this.CreatePath = (vertex1, vertex2) => {
         let orderedPair = `(${vertex1},${vertex2})`;
         let path = {
@@ -50,6 +95,13 @@ function DiGraph() {
         ++this.vertices[vertex2].degree;
         return this.path;
     };
+    /**
+     *
+     * @param startVertexOfPathToDelete
+     * @param endVertexOfPathToDelete
+     * @returns {{}|*}
+     * @constructor
+     */
     this.RemovePath = (startVertexOfPathToDelete, endVertexOfPathToDelete) => {
 
         let pathToRemove = `(${startVertexOfPathToDelete},${endVertexOfPathToDelete})`;
@@ -58,6 +110,13 @@ function DiGraph() {
         --this.vertices[endVertexOfPathToDelete].degree; // Decrement degree of affected node
         return this.path;
     };
+    /**
+     *
+     * @param vertex1
+     * @param vertex2
+     * @returns {{}|*}
+     * @constructor
+     */
     this.InsertPath = (vertex1, vertex2) => {
         let vertexToAdd = vertex1;
         let vertexToLinkTo = vertex2;
