@@ -137,29 +137,20 @@ function DiGraph() {
 }
 
 function Tree() {
-    this.tree = new Graph();
-    this.findMiddle = (array) => {
+    this.middleValue = null;
+    this.branches = {
+        leftBranch: null,
+        rightBranch: null
+    };
+    this.findMiddleAndBranch = (array) => {
         let middle = Math.floor(array.length/2);
-        let leftBranch = array.splice(0,middle);
-        let rightBranch = array.splice(1);
-        while (rightBranch.length !== 0) {
-            let leftMiddle = Math.floor(leftBranch.length/2);
-            let rightMiddle = Math.floor(rightBranch.length/2);
-            this.tree.CreateEdge(array[middle], array[leftMiddle]);
-            this.tree.CreateEdge(array[middle], array[rightMiddle]);
-        }
-        this.findMiddle(leftBranch);
-        this.findMiddle(rightBranch);
+        this.middleValue = array[middle];
+        this.branches.leftBranch = array.slice(0,middle);
+        this.branches.rightBranch = array.slice(middle+1);
     };
 
-        // while (Math.floor(middle/2) !== 0) {
-        //     let leftMiddle = array[middle - (middle/2)];
-        //     let rightMiddle = array[middle + (middle/2)];
-        //     this.tree.CreateEdge(array[middle], leftMiddle);
-        //     this.tree.CreateEdge(array[middle], rightMiddle);
-        //
-        //
 }
+
 //
 // var graph = new Graph();
 // graph.CreateVertex(0,2);
@@ -193,4 +184,5 @@ function Tree() {
 var testArray = [0,14,28,42,53,69,84,92,128,137,156,170,171]; // Pre sorted
 var sapling = new Tree();
 console.log("sapling",sapling);
+console.log(sapling.findMiddleAndBranch(testArray));
 
