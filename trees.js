@@ -138,30 +138,51 @@ function DiGraph() {
 
 function Tree() {
     this.tree = new Graph();
+    this.findMiddle = (array) => {
+        let middle = Math.floor(array.length/2);
+        let leftBranch = array.splice(0,middle);
+        let rightBranch = array.splice(1);
+        while (rightBranch.length !== 0) {
+            let leftMiddle = Math.floor(leftBranch.length/2);
+            let rightMiddle = Math.floor(rightBranch.length/2);
+            this.tree.CreateEdge(array[middle], array[leftMiddle]);
+            this.tree.CreateEdge(array[middle], array[rightMiddle]);
+        }
+        this.findMiddle(leftBranch);
+        this.findMiddle(rightBranch);
+    };
+
+        // while (Math.floor(middle/2) !== 0) {
+        //     let leftMiddle = array[middle - (middle/2)];
+        //     let rightMiddle = array[middle + (middle/2)];
+        //     this.tree.CreateEdge(array[middle], leftMiddle);
+        //     this.tree.CreateEdge(array[middle], rightMiddle);
+        //
+        //
 }
-
-var graph = new Graph();
-graph.CreateVertex(0,2);
-graph.CreateVertex(1,2);
-graph.CreateVertex(2,2);
-console.log("graph",graph);
-console.log("graph.vertices", graph.vertices);
-graph.CreateEdge(0,1);
-graph.CreateEdge(1,2);
-console.log("graph", graph);
-console.log("graph.edges", graph.edges);
-
-var testDi = new DiGraph();
-console.log("testDi",testDi);
-testDi.CreateVertex(0,2);
-testDi.CreateVertex(1,2);
-testDi.CreateVertex(2,2);
-console.log("testDi after CreateVertex", testDi); //this.digraph.vertices
-testDi.CreatePath(0,1);
-testDi.CreatePath(1,2);
-console.log("testDi.Createpath", testDi);
-console.log('testDi.Insertpath(3,0)',testDi.InsertPath(3,0));
-console.log("testDi.vertices", testDi.vertices);
+//
+// var graph = new Graph();
+// graph.CreateVertex(0,2);
+// graph.CreateVertex(1,2);
+// graph.CreateVertex(2,2);
+// console.log("graph",graph);
+// console.log("graph.vertices", graph.vertices);
+// graph.CreateEdge(0,1);
+// graph.CreateEdge(1,2);
+// console.log("graph", graph);
+// console.log("graph.edges", graph.edges);
+//
+// var testDi = new DiGraph();
+// console.log("testDi",testDi);
+// testDi.CreateVertex(0,2);
+// testDi.CreateVertex(1,2);
+// testDi.CreateVertex(2,2);
+// console.log("testDi after CreateVertex", testDi); //this.digraph.vertices
+// testDi.CreatePath(0,1);
+// testDi.CreatePath(1,2);
+// console.log("testDi.Createpath", testDi);
+// console.log('testDi.Insertpath(3,0)',testDi.InsertPath(3,0));
+// console.log("testDi.vertices", testDi.vertices);
 // Note: the degree parameter should probably also store the things that are connected to the vertex
 // that way, I won't have to deal with the ordered pair syntax of my paths while still being able to
 // manipulate the graph with relative ease
@@ -169,6 +190,7 @@ console.log("testDi.vertices", testDi.vertices);
 
 
 
-var testArray = [0,14,28,42,53,69,84,92,128,156,170,171]; // Pre sorted
+var testArray = [0,14,28,42,53,69,84,92,128,137,156,170,171]; // Pre sorted
 var sapling = new Tree();
 console.log("sapling",sapling);
+
