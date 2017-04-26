@@ -137,18 +137,28 @@ function DiGraph() {
 }
 
 function Tree() {
-    this.middleValue = null;
-    this.branches = {
-        leftBranch: null,
-        rightBranch: null
+    this.tree = new DiGraph(); // Inherit methods available to directed graph
+    this.root = null;
+    this.findRoot = (array) => {
+        this.root = {position: Math.floor(array.length / 2), value: array[Math.floor(array.length / 2)]};
+        return this.root;
     };
-    this.findMiddleAndBranch = (array) => {
-        let middle = Math.floor(array.length/2);
-        this.middleValue = array[middle];
-        this.branches.leftBranch = array.slice(0,middle);
-        this.branches.rightBranch = array.slice(middle+1);
+    this.makeNodes = (array) => {
+        for (let i=0; i < array.length; i++) {
+            this.tree.CreateVertex(testArray[i], 2)
+        }
     };
-
+    this.connectNodes = (array) => {
+        while (parseInt(this.root.position/2) !== 0) {
+            let node = this.root.value;
+            let leftNode = this.tree.vertices[array[this.root.position/2]];
+            let rightNode = this.tree.vertices[array[3/2 * this.root.position]];
+            console.log("leftNode", leftNode);
+            this.tree.InsertPath(node, leftNode.vertexValue);
+            this.tree.InsertPath(node, rightNode.vertexValue);
+            this.root.position = this.root.position/2;
+        };
+    }
 }
 
 //
@@ -184,5 +194,8 @@ function Tree() {
 var testArray = [0,14,28,42,53,69,84,92,128,137,156,170,171]; // Pre sorted
 var sapling = new Tree();
 console.log("sapling",sapling);
-console.log(sapling.findMiddleAndBranch(testArray));
+sapling.makeNodes(testArray);
+console.log(sapling.tree.vertices);
+sapling.findRoot(testArray);
+
 
